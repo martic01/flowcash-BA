@@ -1,3 +1,6 @@
+
+
+
 function Bank() {
     this.Accounts = {}
     this.userId;
@@ -596,3 +599,493 @@ let accountId = null;
 
 
 
+
+
+let timeouted;
+let iserror = true;
+
+
+function lenerror(active, numL, numH) {
+    const low = active.length < numL
+    const high = active.length > numH
+    if (high || low) {
+        return true
+    }
+    return false
+}
+
+
+function alerting(className, errorSpace, erroricon, icon, message) {
+    $(className).find(errorSpace).html(message);
+    $(className).find(erroricon).text(icon);
+    $(className).show();
+    timeouted = setTimeout(function () {
+        $(className).fadeOut();
+    }, 3000);
+}
+
+function passwordError(password) {
+    const hasLetter = /[a-zA-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+
+    if (!hasLetter || !hasNumber) {
+        return "Password must contain both letters and numbers";
+    }
+    if (lenerror(password, 5, 8)) {
+        return "Password must be 5-8 characters"
+    };
+    return "";
+}
+
+function gmailerror(email) {
+    const requiredEnd = "@gmail.com";
+    const symbolRegex = /[!#$%^&*(),?":{}|<>]/;
+
+    if (!email.endsWith(requiredEnd)) {
+        return `Email must end with ${requiredEnd}`;
+    }
+
+    const firstChar = email.charAt(0);
+    if (!/[a-zA-Z]/.test(firstChar)) {
+        return "First character must be a letter";
+    }
+
+    if (symbolRegex.test(email)) {
+        return "Email must not contain symbols (!#$%^&*, etc.)";
+    }
+
+    const username = email.slice(0, -10);
+    if (!/^[a-zA-Z0-9.]+$/.test(username)) {
+        return "Email can only contain letters, numbers, and dots (.) before @gmail.com";
+    }
+
+    const len = lenerror(email, 13, 24);
+    if (len) {
+        return "Email must be 13-24 characters";
+    }
+
+    return "";
+}
+
+function checkEditName(input) {
+    // !/^[a-zA-Z]+(?: [a-zA-Z]+)+$/.test(input)
+    if (!/^[a-zA-Z]+ [a-zA-Z]+$/.test(input)) {
+        return "Only First name and Last name is required | <span class='warning'>Name can only be letters</span>";
+    }
+
+    const [firstName, lastName] = input.split(' ');
+
+    if (lenerror(firstName, 3, 20)) {
+        return "First name must be 3-20 characters";
+    }
+
+    if (lenerror(lastName, 3, 20)) {
+        return "Last name must be 3-20 characters";
+    }
+
+    return "";
+}
+
+function checkEditBirth(input) {
+    const age = calculateAge(input);
+    if (age < 16) {
+        alerting(".alerted", ".errormes", ".erroricon", "👀", "You must be at least 16 years old.");
+        return true
+    }
+    return false
+}
+
+
+$(document).ready(function () {
+
+    $(".password").on("input", function () {
+        const password = $(this).val().trim();
+        const warn = $(this).closest('form').find('.warn');
+        const eyelid = $(this).siblings('.eye').find('.eyelid');
+        const pupil = $(this).siblings('.eye').find('.pubdy');
+        const passwordErrorCheck = passwordError(password)
+        if (!password) {
+            eyelid.removeClass('erroreye');
+            pupil.removeClass('errorpupil');
+        } else {
+            if (passwordErrorCheck) {
+                eyelid.addClass('erroreye');
+                pupil.addClass('errorpupil');
+                warn.removeClass('strong');
+            } else {
+                clearTimeout(timeouted);
+                $(".alerted").fadeOut();
+                eyelid.removeClass('erroreye');
+                pupil.removeClass('errorpupil');
+                warn.addClass('strong');
+            }
+        }
+    });
+
+
+
+    $("form").submit(function (e) {
+        e.preventDefault();
+        const password = $(this).find('.password').val().trim();
+        const email = $(this).find('.email').val().trim();
+        const emailError = gmailerror(email)
+        const passwordErrorCheck = passwordError(password)
+       
+        if (passwordErrorCheck || emailError) {
+            iserror = true;
+        }
+        if (emailError) {
+            alerting(".alerted", ".errormes", ".erroricon", "👀", `Invalid Email | <span class="warning">${emailError}</span>`);
+            return;
+        }
+        if (passwordErrorCheck) {
+            alerting(".alerted", ".errormes", ".erroricon", "👀", `${passwordErrorCheck}`);
+            return;
+        }
+
+       
+    });
+});
+
+
+function tostringed(inputed) {
+    return inputed.toLocaleString()
+}
+
+$(document).ready(function () {
+    $(".monbtn").click(function () {
+        const account = bank.findAccount(accountId)
+        const index = $('.monbtn').index(this)
+        const clickedOn = $(this)
+        const moneyClass = ['Withdraw', 'Deposit', 'Request', 'Transfer', 'Transfer', 'Deposit']
+        $(".casf").slideDown()
+        $('.monbtn').removeClass('acting')
+        $("#amount").removeClass()
+        moneyClass.forEach((item, i) => {
+            if (i === index) {
+
+
+                $(".typejs").text(item)
+                $("#amount").addClass(`.${item.toLowerCase()}`)
+                if (item === moneyClass[0] || item === moneyClass[1] || item === moneyClass[2]) {
+                    $(`#${account.id}.bankopt option:eq(0)`).prop('selected', true);
+                    $(`#${account.id}.accountno`).val(account.accountnumber)
+                    $('.bankopt, .accountno').prop('disabled', true)
+                } else {
+                    $(`#${account.id}.accountno`).val('')
+                    $('.bankopt, .accountno').prop('disabled', false)
+                }
+                $(".amount").prop('placeholder', `amount to ${item}`)
+                clickedOn.addClass('acting')
+            }
+        })
+    })
+
+    $(".close").click(function () {
+        $('.monbtn').removeClass('acting')
+        $(".casf").fadeOut()
+    })
+
+    $(".close-alert").click(function () {
+        $('.alerted').slideUp()
+    })
+    $(".opt").click(function () {
+        $(".log").slideToggle()
+        $(".profile-info").hide()
+        $(".profile").removeClass('half')
+    })
+
+
+
+    $(".profile").click(function () {
+        $(".profile-info").slideToggle()
+        $(".profile").toggleClass('half')
+
+    })
+    $(".cover").click(function () {
+        $(".cover").removeClass("covered")
+        $(this).addClass('covered')
+    })
+    $('.tab-btn').click(function () {
+        const clicked = $(this)
+        const warn = $('.warn');
+        $('.tab-btn').removeClass('active')
+        if (clicked.has('.active')) {
+            clicked.toggleClass('active')
+        }
+        if (clicked.notHas('.active')) {
+            $('#username').val('');
+            $('#emailaddress').val('');
+            $('#dateofbirth').val('');
+            $('#nin').val('');
+            $('#password').val('');
+            warn.removeClass('strong');
+        }
+    })
+
+    $("#showSignup").click(function () {
+        $("#signupForm").show()
+        $("#loginForm").hide()
+    })
+
+    $("#showLogin").click(function () {
+        $("#signupForm").hide()
+        $("#loginForm").show()
+    })
+
+    $(".eyes").click(function () {
+        const clickOn = $(this)
+        const inputOf = clickOn.closest('.input-group').find('input')
+        const eyelid = clickOn.find('.eyelid')
+        eyelid.toggleClass('opendeye');
+
+
+
+        const currentType = inputOf.prop('type')
+        inputOf.prop('type', currentType === 'password' ? 'text' : 'password')
+
+    })
+
+    $("form").submit(function (e) {
+        e.preventDefault()
+    })
+
+})
+
+$(document).ready(function () {
+
+    function displayAccount() {
+        const loginemailaddress = $('#loginemailaddress').val();
+        const loginPassword = $('#loginpassword').val();
+
+        // Check for empty fields
+        if (!loginemailaddress || !loginPassword) {
+            alerting(".alerted", ".errormes", ".erroricon", "⚠", "Please fill in all fields.");
+            return;
+        }
+
+        let foundAccount = null;
+
+
+        if (!gmailerror(loginemailaddress)) {
+            // Loop through all accounts to find matching email
+            for (const id in bank.Accounts) {
+                const account = bank.findAccount(id); // Using your existing method
+                if (account && account.emailAddress.toLowerCase() === loginemailaddress.toLowerCase()) {
+                    foundAccount = account;
+                    accountId = id; // Store the account ID
+                    break;
+                }
+            }
+
+
+            if (!foundAccount) {
+                alerting(".alerted", ".errormes", ".erroricon", "⭕", "Account Does not Exist");
+                return;
+            }
+            if (foundAccount.password !== loginPassword) {
+                alerting(".alerted", ".errormes", ".erroricon", "❌", "Incorrect password.");
+                return;
+            }
+
+            $('#loginemailaddress').val('');
+            $('#loginpassword').val('');
+            alerting(".alerted", ".errormes", ".erroricon", "👍", "Login successful!");
+            setTimeout(() => {
+                loadpage(7000, 2000)
+                bindId(accountId);
+                showAccount(accountId);
+            }, 1000);
+        }
+    }
+
+
+
+
+    $('#signupforms').submit(function () {
+        let eye = $(this).find('.eyes')
+        const username = $('#username').val().trim();
+        const emailaddress = $('#emailaddress').val();
+        const dateofbirth = $('#dateofbirth').val();
+        const nin = $('#nin').val();
+        const password = $('#password').val().trim();
+        const balance = 0;
+        const accountnumber = generateAccountNumber().toString();
+        const warn = $('.warn');
+
+        createAccount(username, emailaddress, dateofbirth, nin, password, balance, accountnumber);
+        // Clear form
+        if (!iserror) {
+            if (eye.has('.opendeye')) {
+                eye.trigger('click')
+            }
+            warn.removeClass('strong');
+            $('#username').val('');
+            $('#emailaddress').val('');
+            $('#dateofbirth').val('');
+            $('#nin').val('');
+            $('#password').val('');
+        }
+
+    });
+
+
+    $('#loginforms').submit(function () {
+        displayAccount()
+    });
+
+    $(".logout").click(function () {
+        accountId = null
+        $(".accountpage").show()
+        $('.monbtn').removeClass('acting')
+        $(".profile").removeClass('half')
+        $(".out").hide()
+        iserror = true;
+    })
+});
+
+let timeout;
+let timeinterval;
+
+function intialitem(item1, item2, obj1, obj2) {
+    $(item1).text(obj1)
+    $(item2).text(obj2)
+}
+
+function dropWater(elm, item, classname, efft, obj1, obj2) {
+    $(item).text(obj1)
+    $(elm).addClass(classname)
+    timeout = setTimeout(function () {
+        $(efft).show()
+        setTimeout(function () {
+            $(efft).hide()
+        }, 300)
+        $(item).text(obj2)
+        setTimeout(function () {
+            $(elm).removeClass(classname)
+            $(item).text('')
+        }, 2300)
+    }, 2000)
+
+}
+
+function loadpage(time1,time2) {
+    $(".loader").show()
+    $(".accountpage").fadeOut(time2)
+    setTimeout(() => {
+        $(".mybankpage").fadeIn(time2)
+        setTimeout(() => {
+            $(".loader").fadeOut()
+        }, time2);
+    }, time1);
+}
+
+function blinkEye() {
+    $('.eyelid').addClass('blinked');
+    setTimeout(() => {
+        $('.eyelid').removeClass('blinked');
+    }, 100);
+}
+const messages = [
+    "Welcome back to your Trusted Bank",
+    "Your security is our top priority",
+    "✓ 60-second account setup",
+    "✓ 24/7 fraud monitoring",
+    "Banking that adapts to your ambitions",
+    "Earn 3.5% APY on your savings today",
+    "Join 2M+ customers who trust us",
+];
+
+let i = 0;
+let j = 0;
+let currentMessage = '';
+let isDeleting = false;
+const speed = 100; // Typing speed in ms
+
+function typeWriter() {
+    const element = document.getElementById("typing-text");
+
+    if (i < messages.length) {
+        if (!isDeleting && j <= messages[i].length) {
+            currentMessage = messages[i].substring(0, j);
+            j++;
+            element.innerHTML = currentMessage + '<span class="cursor-blink">|</span>';
+            setTimeout(typeWriter, speed);
+        }
+        else if (isDeleting && j >= 0) {
+            currentMessage = messages[i].substring(0, j);
+            j--;
+            element.innerHTML = currentMessage + '<span class="cursor-blink">|</span>';
+            setTimeout(typeWriter, speed / 2);
+        }
+        else {
+            isDeleting = !isDeleting;
+            if (!isDeleting) i++;
+            if (i >= messages.length) i = 0;
+            setTimeout(typeWriter, 2000);
+        }
+    }
+}
+
+
+// 65
+$(document).ready(function () {
+  $('.balance').each(function () {
+    const $balanceInput = $(this);
+    
+    // Convert to number FIRST, then format
+    const numericValue = parseFloat($balanceInput.val()) || 0;
+    const fixedValue = parseFloat(numericValue.toFixed(2)); // Keep as number
+    
+    $balanceInput.val(fixedValue.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }));
+    
+    $balanceInput.data('original-value', fixedValue);
+    $balanceInput.siblings('.eye').find('.eyelid').addClass('opendeye');
+});
+    typeWriter()
+    blinkEye()
+    setInterval(blinkEye, 4000);
+    intialitem('.wat', '.splash', '💧', '💦')
+    timeinterval = setInterval(() => {
+        clearTimeout(timeout)
+        dropWater('.water', '.wat', 'Awater', '.splash', '💧', '💵')
+    }, 4400)
+
+    const pupil = document.querySelectorAll('.pubdy');
+
+    let timeout;
+
+    // Eye movement range (px from center)
+    const maxMovement = 10;
+
+    document.addEventListener('mousemove', (e) => {
+        // Clear any pending reset
+        clearTimeout(timeout);
+
+        // Get mouse position as percentage
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+
+
+        // Calculate pupil position (inverse movement)
+        const leftX = -(0.5 - x) * maxMovement * 2;
+        const leftY = -(0.5 - y) * maxMovement;
+
+
+        pupil.forEach(pupil => {
+            pupil.style.transform = `translate(calc(-50% + ${leftX}px), calc(-50% + ${leftY}px))`;
+        })
+
+        // Set reset timer when mouse stops
+        timeout = setTimeout(resetPupils, 1000);
+    });
+
+    function resetPupils() {
+        pupil.forEach(pupil => {
+            pupil.style.transform = 'translate(-50%, -50%)';
+        })
+    }
+})
