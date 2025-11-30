@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/69e6ea6e14.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="img/outB.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/bank.css">
+    <script src="Js/jquery-3.7.1.js"></script>
+    <script src="Js/navigate.js"></script>
+    <script src="Js/animate.js"></script>
+    <script src="js/error.js"></script>
+    <script src="Js/bank.js"></script>
+    <script src="js/UI.js"></script>
+    <title>Bank-App</title>
+</head>
+
+<body>
+    <section class="alert-section hide alerted out">
+        <div class="alert">
+            <div class="alert-content">
+                <h2 class="erroricon">❌</h2>
+                <p class="errormes">Experience seamless banking with our user-friendly interface and secure
+                    transactions.</p>
+                <button class="close-alert">X</button>
+            </div>
+        </div>
+    </section>
+    <section class="accountpage">
+        <div class="account-inner">
+            <div class="tab-buttons">
+                <div class="tab-btn" id="showSignup">Sign Up</div>
+                <div class="tab-btn active" id="showLogin">Login</div>
+            </div>
+            <div class="cont2 flex">
+                <div class="flex text">
+                    <p class="wat sic">👌</p>
+                    <p class="splash hide spl1"></p>
+                    <p>Fɭo₩Ca$h</p>
+                    <p class="wat sic">👌</p>
+                    <p class="splash hide spl1"></p>
+                </div>
+            </div>
+            <div class="typing-container">
+                <div id="typing-text"></div>
+            </div>
+            <div id="signupForm" class="form-section">
+                <form id="signupforms">
+                    <div class="input-group">
+                        <input type="text" id="username" placeholder=" " />
+                        <label>First name and Last name</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" class="email" id="emailaddress" placeholder=" " />
+                        <label>Email</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="date" id="dateofbirth" placeholder=" " />
+                        <label>Date of Birth</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" id="nin" placeholder=" " />
+                        <label>NiN</label>
+                    </div>
+
+                    <div class="input-group flex pass">
+                        <input type="password" id="password" placeholder=" " class="password" />
+                        <label>Password </label>
+                        <div class="eye eyes eye1">
+                            <div class="eye-icon">
+                                <div class="eyelid"></div>
+                                <div class="eye-ball">
+                                    <div class="pubdy">
+                                        <div class="pupil"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="warn">Password 5 to 8 characters, Alphanumeric</p>
+                    <button type="submit">Sign Up</button>
+                </form>
+            </div>
+
+            <div id="loginForm" class="form-section active">
+                <form id="loginforms">
+                    <div class="input-group">
+                        <input type="email" class="email" id="loginemailaddress" placeholder=" " />
+                        <label>Email</label>
+                    </div>
+                    <div class="input-group flex">
+                        <input type="password" id="loginpassword" class="password" placeholder=" " />
+                        <label>Password</label>
+                        <div class="eye eyes eye2">
+                            <div class="eye-icon">
+                                <div class="eyelid"></div>
+                                <div class="eye-ball">
+                                    <div class="pubdy">
+                                        <div class="pupil"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="login">Login</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="mybankpage hide out">
+        <div class="app">
+            <div class="header">
+                <div class="user-info">
+                    <div>
+                        <strong class="named">Hello Alexar</strong><br />
+                        Welcome Back!
+                    </div>
+                </div>
+                <div class="opts cover">
+                    <i class="fa-solid fa-bars opt"></i>
+                    <div class="log out">
+                        <h4 class="logout">Logout</h4> <br />
+                        <h4 class="profile"> Profile</h4>
+                        <div class="profile-info hide myprofile out">
+                            <div class="info-row">
+                                <label>Name:</label>
+                                <input class="name" type="text" value="Matthew Bakery" readonly />
+                                <i class="fas fa-pen edit-icon edit" title="Edit"></i>
+                                <i class="fas fa-check done-icon done" title="Done"></i>
+                            </div>
+                            <div class="info-row">
+                                <label>Date of Birth:</label>
+                                <input class="birth" type="" readonly />
+                                <i class="fas fa-pen edit-icon edit" title="Edit"></i>
+                                <i class="fas fa-check done-icon done" title="Done"></i>
+                            </div>
+                            <div class="info-row">
+                                <label>Email</label>
+                                <input class="emailed" type="text" value="" readonly />
+                                <i class="fas fa-pen edit-icon edit" title="Edit"></i>
+                                <i class="fas fa-check done-icon done" title="Done"></i>
+                            </div>
+                            <div class="info-row">
+                                <label>Account Number:</label>
+                                <input class="accountnum dim" type="" readonly />
+                            </div>
+                            <div class="info-row">
+                                <label>NIN:</label>
+                                <input class="dim nin" type="text" readonly value="12345678901">
+                            </div>
+                            <div class="info-row">
+                                <label>BVN:</label>
+                                <input class="dim bvn" type="text" readonly value="22110033445">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="casf hide out">
+                <div class="myprofile cashflow">
+                    <div class="cancel close">
+                        X
+                    </div>
+                    <div class="cont2 flex">
+                        <div class="flex text">
+                            <p class="wat sic">👌</p>
+                            <p class="splash hide spl1"></p>
+                            <p>Fɭo₩Ca$h</p>
+                            <p class="wat sic">👌</p>
+                            <p class="splash hide spl1"></p>
+                        </div>
+                    </div>
+                    <p class="type typejs">Transfer</p>
+                    <div class="info-row">
+                        <label>Bank Name:</label>
+                        <select name="Bankopt" class="bankopt">
+                            <option>Fɭo₩Ca$h</option>
+                            <option>Opay</option>
+                            <option>Access Bank</option>
+                            <option>MarticAM $Bank</option>
+                            <option>Palmpay</option>
+                        </select>
+                    </div>
+                    <div class="info-row">
+                        <label>Amount:</label>
+                        <input class="amount" type="number" />
+                    </div>
+                    <div class="info-row">
+                        <label>Account No:</label>
+                        <input type="text" class="accountno" value="12347891098" placeholder="account number" />
+                    </div>
+                    <button class="info-row btn">
+                        <input class="dim btnsmon btns" type="text" value="Done" readonly>
+                    </button>
+
+                </div>
+            </div>
+            <div class="wallet-card">
+                <div>Available Balance</div>
+                <div class="input-group ban flex pass">
+                    <p class="currency"><i class="fa-solid fa-naira-sign"></i></p>
+                    <input type="text" class="balance" readonly value="700000000.00" />
+                    <div class="eye beye">
+                        <div class="eye-icon">
+                            <div class="eyelid"></div>
+                            <div class="eye-ball">
+                                <div class="pubdy">
+                                    <div class="pupil"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p> Account number: <span class="accountnumd">123434322134</span> <span class="copy">🔍</span></p>
+                <div class="wallet-actions">
+                    <div class="wid monbtn">💰<br />Withdraw</div>
+                    <div class="dep monbtn">💰<br />Deposite</div>
+                    <div class="reqt monbtn hd">⬇️<br />Request</div>
+                    <div class="transr monbtn hd">🔄<br />Transfer
+                    </div>
+                    <div class="his">📜<br />History</div>
+                </div>
+            </div>
+
+            <div class="other-services">
+                <div class="service">
+                    <i class="fas fa-file-invoice-dollar"></i><br />
+                    <p>Invoice</p>
+                </div>
+                <div class="service">
+                    <i class="fas fa-file-invoice"></i><br />
+                    <p>Pay Bills</p>
+                </div>
+                <div class="service monbtn">
+                    <i class="fas fa-building-columns"></i><br />
+                    <p>Bank Transfer</p>
+                </div>
+                <div class="service">
+                    <i class="fas fa-piggy-bank"></i><br />
+                    <p>Saving</p>
+                </div>
+                <div class="service">
+                    <i class="fas fa-bolt"></i><br />
+                    <p>Electricity</p>
+                </div>
+                <div class="service">
+                    <i class="fas fa-film"></i><br />
+                    <p>Movie</p>
+                </div>
+                <div class="service monbtn">
+                    <i class="fas fa-money-bill-wave"></i><br />
+                    <p>Add Money</p>
+                </div>
+                <div class="service">
+                    <i class="fas fa-share-nodes"></i><br />
+                    <p>Share</p>
+                </div>
+            </div>
+
+            <div class="wallet-card" id="footer">
+                <div>Easy Banking for you 👌</div>
+                <div class="cont flex">
+                    <div class="water">
+                        <p class="wat siz">👌</p>
+                        <p class="splash hide spl1"></p>
+                    </div>
+                    <div class="flex text">
+                        <p>Fɭo₩Ca$h</p>
+                    </div>
+                    <div class="water">
+                        <p class="wat siz">👌</p>
+                        <p class="splash hide spl1"></p>
+                    </div> Banking app
+                </div>
+
+                <div class="footer-actions">
+                    <div>
+                        <p>Follow us</p>
+                        <i class="fab fa-instagram"></i>
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                    <div>
+                        <p>Get app</p>
+                        <i class="fab fa-google-play"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recent-activity history cover out">
+                <h3>Recent Activity</h3>
+                <div class="trans">
+                    <div class="activity-item">
+                        <div class="activity-left">
+                            <div>
+                                <div>Alex Maccullam</div><small>Send Money</small>
+                            </div>
+                        </div>
+                        <div class="negative">- $66.02</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-left">
+                            <div>
+                                <div>Mac Dinner</div><small>Cashout</small>
+                            </div>
+                        </div>
+                        <div class="negative">- $120.02</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-left">
+                            <div>
+                                <div>Mac Dinner</div><small>Cashout</small>
+                            </div>
+                        </div>
+                        <div class="negative">- $120.02</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="loader hide">
+        <div class="flowcash-loader flex">
+            <div class="wave-container">
+                <div class="wave"></div>
+            </div>
+            <div class="flowcash-logo">Fɭo₩Ca$h</div>
+            <div class="trust-badge">Secured Transactions • 256-bit Encryption</div>
+        </div>
+    </div>
+</body>
+
+</html>
